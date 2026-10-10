@@ -1,0 +1,77 @@
+{% extends 'Common/Home.html' %}
+{% block content %}
+    <div class="card clear">
+        <h1>Payment</h1>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-warning card-header-icon">
+                        <div class="card-icon">
+                            <i class="bi bi-clock"></i>
+                        </div>
+                        <p class="card-category">Start Time</p>
+                        <h3 class="card-title"><small>{{ parking.start_time|date:"H:i a" }}</small></h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-success card-header-icon">
+                        <div class="card-icon">
+                            <i class="bi bi-clock-fill"></i>
+                        </div>
+                        <p class="card-category">End Time</p>
+                        <h3 class="card-title"><small>{{ end_time|date:"H:i a" }}</small></h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-danger card-header-icon">
+                        <div class="card-icon">
+                            <i class="bi bi-car-front-fill"></i>
+                        </div>
+                        <p class="card-category">Vehicle</p>
+                        <h3 class="card-title"><small class="no">{{ parking.vehicle_no }}</small></h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-6 col-md-6 col-sm-6">
+                <div class="card card-stats">
+                    <div class="card-header card-header-info card-header-icon">
+                        <div class="card-icon">
+                            <i class="bi bi-cash"></i>
+                        </div>
+                        <p class="card-category">Parking Fee</p>
+                        <h3 class="card-title">₹ {{ amount }}</h3>
+                    </div>
+                    <div class="card-footer">
+                        <div class="stats">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row payment-wrap">
+            <form method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn">Submit Payment</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

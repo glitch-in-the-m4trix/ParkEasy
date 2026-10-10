@@ -1,0 +1,90 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+
+        {% for field in log_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" data-message="{{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in staff_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" data-message="{{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+        
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info form-header">
+                        <h4 class="card-title text-center">Add Staff</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" class="w-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ staff_form.name.label }}
+                                        {{ staff_form.name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ staff_form.photo.label }}
+                                        {{ staff_form.photo }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ staff_form.dob.label }}
+                                        {{ staff_form.dob }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ staff_form.phone.label }}
+                                        {{ staff_form.phone|attr:"pattern:[6-9]\d{9}" }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ log_form.username.label }}
+                                        {{ log_form.username|attr:"type:email" }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ log_form.password.label }}
+                                        {{ log_form.password }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ staff_form.address.label }}
+                                        {{ staff_form.address|attr:"rows:1" }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Add</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

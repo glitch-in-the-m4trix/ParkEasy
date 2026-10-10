@@ -1,0 +1,50 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+
+        {% for field in form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" data-message="{{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header card-header-info form-header">
+                        <h4 class="card-title text-center">Start Parking</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" class="w-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.user.label }}
+                                        {{ form.user }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.vehicle_no.label }}
+                                        {{ form.vehicle_no }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Start</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

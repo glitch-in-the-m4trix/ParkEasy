@@ -1,0 +1,55 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for error in form.non_field_errors %}
+            <span class="message" data-type="error" data-message="{{ error }}"></span>
+        {% endfor %}
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+        
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title text-center">Set Parking Rate</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.two_wheeler_rate.label }}
+                                        {{ form.two_wheeler_rate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.three_wheeler_rate.label }}
+                                        {{ form.three_wheeler_rate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ form.four_wheeler_rate.label }}
+                                        {{ form.four_wheeler_rate }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Set</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

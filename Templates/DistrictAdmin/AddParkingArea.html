@@ -1,0 +1,174 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+
+        {% for field in parking_area_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in two_wheeler_grid_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in three_wheeler_grid_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in four_wheeler_grid_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+        
+        <div class="row d-flex justify-content-center pa-form-wrapper">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-info form-header">
+                        <h4 class="card-title text-center">Add Parking Area</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" class="w-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ parking_area_form.name.label }}
+                                        {{ parking_area_form.name }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ parking_area_form.latitude.label }}
+                                        {{ parking_area_form.latitude }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ parking_area_form.longitude.label }}
+                                        {{ parking_area_form.longitude }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        {{ parking_area_form.address.label }}
+                                        {{ parking_area_form.address|attr:"rows:2" }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sub-head">
+                                <h4>Two Wheeler Grid</h4>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ two_wheeler_grid_form.rows.label }}
+                                        {{ two_wheeler_grid_form.rows }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ two_wheeler_grid_form.columns.label }}
+                                        {{ two_wheeler_grid_form.columns }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ two_wheeler_grid_form.online_bookable.label }}
+                                        {{ two_wheeler_grid_form.online_bookable }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sub-head">
+                                <h4>Three Wheeler Grid</h4>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ three_wheeler_grid_form.rows.label }}
+                                        {{ three_wheeler_grid_form.rows }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ three_wheeler_grid_form.columns.label }}
+                                        {{ three_wheeler_grid_form.columns }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ three_wheeler_grid_form.online_bookable.label }}
+                                        {{ three_wheeler_grid_form.online_bookable }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="sub-head">
+                                <h4>Four Wheeler Grid</h4>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ four_wheeler_grid_form.rows.label }}
+                                        {{ four_wheeler_grid_form.rows }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ four_wheeler_grid_form.columns.label }}
+                                        {{ four_wheeler_grid_form.columns }}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        {{ four_wheeler_grid_form.online_bookable.label }}
+                                        {{ four_wheeler_grid_form.online_bookable }}
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Add</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body" id="parking-map">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

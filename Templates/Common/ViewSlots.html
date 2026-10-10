@@ -1,0 +1,83 @@
+{% extends 'Common/Home.html' %}
+{% block content %}
+    <style>
+        :root {
+            --columns: {{ parking_grid.columns }};
+        }
+    </style>
+
+    {% for message in messages %}
+        <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+    {% endfor %}
+
+    {% for field in form %}
+        {% for error in field.errors %}
+            <span class="message" data-type="error" data-message="{{ error }}"></span>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="card clear">
+        <h1>{{ parking_grid.parking_area.name }} - {{ parking_grid.vehicle_type }}</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="parking-legend">
+                <div class="legend-item">
+                    <span class="legend-color slot-available"></span> Available
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color slot-booked"></span> Booked
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color slot-occupied"></span> Occupied
+                </div>
+            </div>
+
+            <div class="parking-layout">
+                {% for slot in slots %}
+                    {% if request.user.is_admin %}
+                        <a href="{% url 'ParkEasyApp:slot_history' slot.id %}">
+                            <div class="parking-slot
+                                {% if slot.status == 0 %}slot-available
+                                {% elif slot.status == 1 %}slot-booked
+                                {% elif slot.status == 2 %}slot-occupied
+                                {% endif %}">
+
+                                <span class="slot-label">{{ slot.slot }}</span>
+                            </div>
+                        </a>
+
+                    {% elif request.user.is_staff %}
+                        <a href="{% url 'ParkEasyApp:update_slot' slot.id slot.status %}">
+                            <div class="parking-slot
+                                {% if slot.status == 0 %}slot-available
+                                {% elif slot.status == 1 %}slot-booked
+                                {% elif slot.status == 2 %}slot-occupied
+                                {% endif %}">
+
+                                <span class="slot-label">{{ slot.slot }}</span>
+                            </div>
+                        </a>
+                        
+                    {% elif request.user.is_user %}
+                        <a href="{% url 'ParkEasyApp:book_slot' slot.id %}" 
+                            {% if slot.status != 0 %}class="slot-unavailable"{% endif %}>
+                            <div class="parking-slot
+                                {% if slot.status == 0 %}slot-available
+                                {% elif slot.status == 1 %}slot-booked
+                                {% elif slot.status == 2 %}slot-occupied
+                                {% endif %}">
+
+                                <span class="slot-label">{{ slot.slot }}</span>
+                            </div>
+                        </a>
+                    {% endif %}
+                {% empty %}
+                    <p>No parking slots found.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

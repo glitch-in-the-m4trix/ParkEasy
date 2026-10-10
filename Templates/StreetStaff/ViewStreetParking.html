@@ -1,0 +1,94 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for error in form.non_field_errors %}
+            <span class="message" data-type="error" data-message="{{ error }}"></span>
+        {% endfor %}
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+        
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title text-center">Select Street</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        Street
+                                        <select name="street" id="id_street" class="form-control" required>
+                                            <option value="">Select Street</option>
+                                            {% for street in streets %}
+                                                <option value="{{ street.id }}">{{ street }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Search</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if street_parkings is not None %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Parking History</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th></th>
+                                    <th>Vehicle No</th>
+                                    <th>Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Fee</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    {% for parking in street_parkings %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ parking.vehicle_no }}</td>
+                                            <td>{{ parking.start_time|date:"Y-m-d" }}</td>
+                                            <td>{{ parking.start_time|date:"H:i A" }}</td>
+                                            <td>{{ parking.end_time|date:"H:i A"|default:"Parked" }}</td>
+                                            <td>₹ {{ parking.fee|default:0 }}</td>
+                                            <td>
+                                                {% if parking.status == 1 %}
+                                                    <a href="{% url 'ParkEasyApp:street_payment' parking.id %}" class="btn btn-sm btn-success">Pay</a>
+                                                {% endif %}
+                                            </td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="15" class="text-center">
+                                                <p class="empty">No vehicles parked currently</p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}

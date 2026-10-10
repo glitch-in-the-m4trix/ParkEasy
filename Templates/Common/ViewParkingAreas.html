@@ -1,0 +1,78 @@
+{% extends 'Common/Home.html' %}
+{% block content %}
+    <div class="container-fluid">
+        {% csrf_token %}
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+        
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Parking Areas</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th></th>
+                                    <th>Name</th>
+                                    <th>Address</th>
+                                    <th>2W Slots</th>
+                                    <th>3W Slots</th>
+                                    <th>4W Slots</th>
+                                    <th></th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    {% for area in parking_areas %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ area.name }}</td>
+                                            <td>{{ area.address }}</td>
+                                            <td>{{ area.two_wheeler_slots }}</td>
+                                            <td>{{ area.three_wheeler_slots }}</td>
+                                            <td>{{ area.four_wheeler_slots }}</td>
+                                            {% if request.user.is_district_admin %}
+                                                <td>
+                                                    <a href="{% url 'ParkEasyApp:add_staff' area.id %}" 
+                                                        class="btn btn-sm btn-success narrow">Add Staff</a>
+                                                </td>
+                                                <td>
+                                                    <a href="{% url 'ParkEasyApp:payments' area.id %}" 
+                                                        class="btn btn-sm btn-success narrow">Payments</a>
+                                                </td>
+                                            {% elif request.user.is_admin or request.user.is_user %}
+                                                <td class="td-actions">
+                                                    <div class="btn-wrap">
+                                                        <a href="{% url 'ParkEasyApp:view_slots' '2W' area.id %}" 
+                                                            class="btn btn-sm btn-success narrow">2W</a>
+                                                        <a href="{% url 'ParkEasyApp:view_slots' '3W' area.id %}" 
+                                                            class="btn btn-sm btn-success narrow">3W</a>
+                                                        <a href="{% url 'ParkEasyApp:view_slots' '4W' area.id %}" 
+                                                            class="btn btn-sm btn-success narrow">4W</a>
+                                                    </div>
+                                                </td>
+                                                <td class="td-actions">
+                                                    <a href="{% url 'ParkEasyApp:reviews' area.id %}" 
+                                                        class="btn btn-sm btn-info narrow">Reviews</a>
+                                                </td>
+                                            {% endif %}
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="15" class="text-center">
+                                                <p class="empty">No areas to show</p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+{% endblock %}

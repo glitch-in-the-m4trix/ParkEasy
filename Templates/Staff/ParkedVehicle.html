@@ -1,0 +1,55 @@
+{% extends 'Common/Home.html' %}
+{% block content %}
+    <style>
+        :root {
+            --columns: {{ parking_grid.columns }};
+        }
+    </style>
+
+    {% for message in messages %}
+        <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+    {% endfor %}
+
+    {% for field in form %}
+        {% for error in field.errors %}
+            <span class="message" data-type="error" data-message="{{ error }}"></span>
+        {% endfor %}
+    {% endfor %}
+
+    <div class="card clear">
+        <h1>{{ parking_grid.parking_area.name }} - {{ parking_grid.vehicle_type }}</h1>
+    </div>
+
+    <div class="card">
+        <div class="card-body">
+            <div class="parking-legend">
+                <!-- <div class="legend-item">
+                    <span class="legend-color slot-available"></span> Available
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color slot-booked"></span> Booked
+                </div>
+                <div class="legend-item">
+                    <span class="legend-color slot-occupied"></span> Occupied
+                </div> -->
+            </div>
+
+            <div class="parking-layout">
+                {% for slot in slots %}
+                    <a href="{% url 'ParkEasyApp:update_slot' slot.id slot.status %}">
+                        <div class="parking-slot slot-available 
+                        {% if slot == parking_slot %}
+                            searched-vehicle
+                        {% endif %}">
+
+                            <span class="slot-label">{{ slot.slot }}</span>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p>No parking slots found.</p>
+                {% endfor %}
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

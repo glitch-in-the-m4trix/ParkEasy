@@ -1,0 +1,110 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    {% if request.user.is_user %}
+        <div class="container-fluid">
+            {% for message in messages %}
+                <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+            {% endfor %}
+
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <span class="message" data-type="error" 
+                        data-message="{{ field.label }} - {{ error }}"></span>
+                {% endfor %}
+            {% endfor %}
+            
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-12">
+                    <div class="card">
+                        <div class="card-header card-header-info form-header">
+                            <h4 class="card-title text-center">Add Review</h4>
+                        </div>
+                        <div class="card-body">
+                            <form method="post" enctype="multipart/form-data" class="w-form">
+                                {% csrf_token %}
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            {{ form.title.label }}
+                                            {{ form.title }}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6" id="star-rating">
+                                        <div class="form-group">
+                                            {{ form.rating|attr:"type:hidden" }}
+                                            <div class="stars-wrap">
+                                                <i class="bi bi-star" data-rating="1"></i>
+                                                <i class="bi bi-star" data-rating="2"></i>
+                                                <i class="bi bi-star" data-rating="3"></i>
+                                                <i class="bi bi-star" data-rating="4"></i>
+                                                <i class="bi bi-star" data-rating="5"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            {{ form.review.label }}
+                                            {{ form.review|attr:"rows:2" }}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="btn-wrap">
+                                    <button type="submit" class="btn btn-info pull-right">Add</button>
+                                </div>
+                                <div class="clearfix"></div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="card clear">
+        <h1>Reviews</h1>
+    </div>
+
+    <div class="content">
+        <div class="container-fluid">
+            <div class="row" id="reviews-wrapper">
+                {% for review in reviews %}
+                    <div class="col-md-4 mt-4">
+                        <div class="card card-profile">
+                            <div class="card-avatar">
+                                <a href="#pablo">
+                                    <img class="img" src="{{ review.user.photo.url }}" />
+                                </a>
+                            </div>
+                            <div class="card-body">
+                                <div class="stars-wrap">
+                                    {% for star in "*****" %}
+                                        {% if forloop.counter <= review.rating %}
+                                            <i class="bi bi-star-fill"></i>
+                                        {% else %}
+                                            <i class="bi bi-star"></i>
+                                        {% endif %}
+                                    {% endfor %}
+                                </div>
+                                <h4 class="card-title">{{ review.title }}</h4>
+                                <h6 class="card-category">{{ review.user.name}}</h6>
+                                <p class="card-description">{{ review.review }}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% empty %}
+                    <div class="col-md-4"></div>
+                    <div class="col-md-4">
+                        <div class="card card-profile">
+                            <div class="card-body">
+                                <h4 class="card-title">No Reviews</h4>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

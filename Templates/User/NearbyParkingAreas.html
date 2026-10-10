@@ -1,0 +1,79 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+
+        {% for field in parking_area_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in two_wheeler_grid_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in three_wheeler_grid_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+
+        {% for field in four_wheeler_grid_form %}
+            {% for error in field.errors %}
+                <span class="message" data-type="error" 
+                data-message="{{ field.label }}: {{ error }}"></span>
+            {% endfor %}
+        {% endfor %}
+        
+        <div class="row d-flex justify-content-center pa-form-wrapper">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header card-header-info form-header">
+                        <h4 class="card-title text-center">Search</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post" enctype="multipart/form-data" class="w-form">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        Latitude
+                                        <input type="text" name="latitude" id="id_latitude" 
+                                            class="form-control" readonly>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        Longitude
+                                        <input type="text" name="longitude" id="id_longitude" 
+                                            class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Search</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-body" id="parking-map">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,83 @@
+{% extends 'Common/Home.html' %}
+{% load widget_tweaks %}
+{% block content %}
+    <div class="container-fluid">
+        {% for error in form.non_field_errors %}
+            <span class="message" data-type="error" data-message="{{ error }}"></span>
+        {% endfor %}
+        {% for message in messages %}
+            <span class="message" data-type="{{ message.tags }}" data-message="{{ message }}"></span>
+        {% endfor %}
+        
+        <div class="row d-flex justify-content-center">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title text-center">Search Vehicle</h4>
+                    </div>
+                    <div class="card-body">
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        Vehicle Number
+                                        <input type="text" name="vehicle_no" class="form-control">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-wrap">
+                                <button type="submit" class="btn btn-info pull-right">Search</button>
+                            </div>
+                            <div class="clearfix"></div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {% if parking_history is not None %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header card-header-info">
+                        <h4 class="card-title">Parking History</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead class="text-primary">
+                                    <th></th>
+                                    <th>Parking Slot</th>
+                                    <th>Date</th>
+                                    <th>Start Time</th>
+                                    <th>End Time</th>
+                                    <th>Fee</th>
+                                </thead>
+                                <tbody>
+                                    {% for parking in parking_history %}
+                                        <tr>
+                                            <td>{{ forloop.counter }}</td>
+                                            <td>{{ parking.parking_slot }}</td>
+                                            <td>{{ parking.start_time|date:"Y-m-d" }}</td>
+                                            <td>{{ parking.start_time|date:"H:i A" }}</td>
+                                            <td>{{ parking.end_time|date:"H:i A"|default:"Parked" }}</td>
+                                            <td>₹ {{ parking.payment.amount|default:0 }}</td>
+                                        </tr>
+                                    {% empty %}
+                                        <tr>
+                                            <td colspan="15" class="text-center">
+                                                <p class="empty">No history found</p>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
